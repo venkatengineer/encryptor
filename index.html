@@ -1,530 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<title>Secret Story Encryptor</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-<style>
-  :root {
-    --bg: #000000;
-    --card: #001100;
-    --accent: #00ff00;
-    --muted: #006600;
-    --text: #00ff00cc;
-    --text-bright: #00ff00ee;
-  }
-  body {
-    font-family: monospace, 'Poppins', monospace;
-    background: var(--bg);
-    margin: 1.5rem 1.5rem 3rem 1.5rem;
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-  }
-  .wrap {
-    max-width: 900px;
-    width: 100%;
-  }
-  header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 1rem;
-    font-weight: 700;
-    font-size: 2.5rem;
-    letter-spacing: 0.15em;
-    color: var(--accent);
-    text-shadow: 0 0 10px var(--accent);
-    font-family: monospace, 'Courier New', Courier, monospace;
-  }
-  header img {
-    width: 48px;
-    height: 48px;
-  }
-  .card {
-    background: var(--card);
-    border-radius: 12px;
-    box-shadow: 0 0 25px var(--accent);
-    padding: 1.25rem;
-    margin-bottom: 1.5rem;
-    color: var(--text);
-  }
-  h3 {
-    font-weight: 700;
-    font-family: monospace, 'Courier New', Courier, monospace;
-    margin-top: 0;
-    margin-bottom: 1rem;
-    color: var(--text-bright);
-  }
-  label {
-    display: block;
-    font-weight: 600;
-    margin-top: 0.5rem;
-    color: var(--text-bright);
-  }
-  textarea, input[type="password"], select {
-    width: 100%;
-    font-family: monospace, monospace;
-    font-size: 1rem;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #004400;
-    border-radius: 8px;
-    background: #002200;
-    color: var(--text);
-    margin-top: 0.25rem;
-    box-sizing: border-box;
-    resize: vertical;
-    transition: border-color 0.2s ease;
-  }
-  textarea:focus, input[type="password"]:focus, select:focus {
-    outline: none;
-    border-color: var(--accent);
-    background: #003300;
-    color: var(--text-bright);
-  }
-  .controls {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  button {
-    cursor: pointer;
-    background: var(--accent);
-    border: none;
-    border-radius: 10px;
-    color: #001100;
-    font-weight: 700;
-    padding: 0.6rem 1.2rem;
-    font-family: monospace;
-    font-size: 1.1rem;
-    box-shadow: 0 0 20px var(--accent);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    user-select: none;
-    flex-shrink: 0;
-  }
-  button:hover:not(:disabled) {
-    background: #00ff00cc;
-    box-shadow: 0 0 28px #00ff00ff;
-  }
-  button:disabled {
-    opacity: 0.4;
-    cursor: default;
-    box-shadow: none;
-  }
-  button.ghost {
-    background: transparent;
-    color: var(--accent);
-    border: 1.5px solid var(--accent);
-    box-shadow: none;
-  }
-  button.ghost:hover:not(:disabled) {
-    background: var(--accent);
-    color: #001100;
-  }
-  select {
-    max-width: 140px;
-    cursor: pointer;
-  }
-  .small {
-    font-size: 0.85rem;
-    color: var(--muted);
-    font-family: monospace;
-  }
-  .output {
-    white-space: pre-wrap;
-    font-family: monospace, monospace;
-    padding: 0.9rem 1.1rem;
-    background: #002200;
-    border-radius: 8px;
-    border: 1px dashed #004400;
-    min-height: 6rem;
-    user-select: text;
-    color: var(--text);
-    line-height: 1.5;
-  }
-  .signature {
-    font-size: 0.8rem;
-    color: var(--muted);
-    margin-top: 0.75rem;
-    font-family: monospace;
-    user-select: none;
-  }
-  .timer {
-    color: var(--muted);
-    font-weight: 700;
-    font-family: monospace;
-    margin-left: auto;
-  }
-  footer {
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--muted);
-    margin-top: 3rem;
-    font-family: monospace;
-    border-top: 1px solid #004400;
-    padding-top: 1rem;
-  }
-  footer a {
-    color: var(--accent);
-    text-decoration: none;
-    margin: 0 0.5rem;
-  }
-  footer a:hover {
-    text-decoration: underline;
-  }
-  @media (max-width: 700px) {
-    .controls {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    button, select {
-      width: 100%;
-      max-width: none;
-    }
-  }
-</style>
+  <meta charset="utf-8" />
+  <title>Secret Story Encryptor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div class="wrap" role="main" aria-label="Secret Story Encryptor">
-  <header>
-    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><rect rx='8' width='40' height='40' fill='%2300ff00'/><text x='50%' y='55%' font-size='20' text-anchor='middle' fill='black' font-family='Courier New'>SS</text></svg>" alt="Logo: SS" />
-    <div>Secret Story Encryptor</div>
-  </header>
+  <div class="wrap" role="main">
+    <header>
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><rect rx='8' width='40' height='40' fill='%2300ff00'/><text x='50%' y='55%' font-size='20' text-anchor='middle' fill='black' font-family='Courier New'>SS</text></svg>" alt="" />
+      <div>Secret Story Encryptor</div>
+    </header>
 
-  <section class="card" aria-labelledby="encryptTitle">
-    <h3 id="encryptTitle">Encrypt Here</h3>
-    <label for="plain">Plaintext Message</label>
-    <textarea id="plain" rows="4" placeholder="Enter secret message..." aria-required="true"></textarea>
-    <label for="encPass">Password</label>
-    <input id="encPass" type="password" placeholder="Enter password" aria-describedby="passwordAdviceEnc" aria-required="true" />
-    <div class="small" id="passwordAdviceEnc">Use a strong password for security.</div>
-    <div class="controls" role="group" aria-label="Encryption controls">
-      <button id="btnEncode" type="button">Encrypt</button>
-      <button id="btnEncodeCopy" type="button" class="ghost" disabled>Copy Story</button>
-      <div class="small" style="margin-left:auto;">
-        Story Style:
-        <select id="variantSelect" aria-label="Select story style">
-          <option value="short">Short</option>
-          <option value="long">Long</option>
-          <option value="poetic">Poetic</option>
-        </select>
+    <section class="card">
+      <h3>Encrypt Here</h3>
+      <label for="plain">Plaintext Message</label>
+      <textarea id="plain" rows="4" placeholder="Enter secret message..." aria-required="true"></textarea>
+      <label for="encPass">Password</label>
+      <input id="encPass" type="password" placeholder="Enter password" aria-describedby="passwordAdviceEnc" aria-required="true" />
+      <div class="small" id="passwordAdviceEnc">Use a strong password for security.</div>
+      <div class="controls" role="group">
+        <button id="btnEncode" type="button">Encrypt</button>
+        <button id="btnEncodeCopy" type="button" class="ghost" disabled>Copy Story</button>
+        <div class="small" style="margin-left:auto;">
+          Theme:
+          <select id="themeSelect">
+            <option value="general">General</option>
+            <option value="physics">Physics</option>
+            <option value="cs">Computer Science</option>
+            <option value="astro">Astronomy</option>
+          </select>
+          Style:
+          <select id="variantSelect">
+            <option value="short">Short</option>
+            <option value="long">Long</option>
+            <option value="poetic">Poetic</option>
+          </select>
+        </div>
       </div>
-    </div>
-    <label for="storyOut" style="margin-top:1rem;">Encrypted Story Output (paragraphs)</label>
-    <div id="storyOut" class="output" aria-live="polite" spellcheck="false" style="white-space: pre-wrap;"></div>
-    <div id="storySig" class="signature" aria-live="polite"></div>
-  </section>
+      <label style="margin-top:1rem;">Encrypted Story Output (paragraphs)</label>
+      <div id="storyOut" class="output" aria-live="polite" spellcheck="false"></div>
+      <div id="storySig" class="signature" aria-live="polite"></div>
+    </section>
 
-  <section class="card" aria-labelledby="decryptTitle">
-    <h3 id="decryptTitle">Decrypt Here</h3>
-    <label for="storyIn">Paste Encrypted Story</label>
-    <textarea id="storyIn" rows="6" placeholder="Paste full story including signature" aria-required="true" spellcheck="false"></textarea>
-    <label for="decPass">Password</label>
-    <input id="decPass" type="password" placeholder="Enter password" aria-required="true" aria-describedby="passwordAdviceDec" />
-    <div class="small" id="passwordAdviceDec">Use the same password used for encryption.</div>
-    <div class="controls" role="group" aria-label="Decryption controls">
-      <button id="btnDecode" type="button">Decrypt</button>
-      <button id="btnRevealCopy" type="button" class="ghost" disabled>Copy Secret</button>
-      <div style="margin-left:auto;" class="small">
-        Show for
-        <select id="showSeconds" aria-label="Select how long to display decrypted secret">
-          <option value="5">5 sec</option>
-          <option value="10" selected>10 sec</option>
-          <option value="20">20 sec</option>
-          <option value="0">Persistent</option>
-        </select>
+    <section class="card">
+      <h3>Decrypt Here</h3>
+      <label for="storyIn">Paste Encrypted Story</label>
+      <textarea id="storyIn" rows="6" placeholder="Paste full story including signature" aria-required="true" spellcheck="false"></textarea>
+      <label for="decPass">Password</label>
+      <input id="decPass" type="password" placeholder="Enter password" aria-required="true" aria-describedby="passwordAdviceDec" />
+      <div class="small" id="passwordAdviceDec">Use the same password used for encryption.</div>
+      <div class="controls" role="group">
+        <button id="btnDecode" type="button">Decrypt</button>
+        <button id="btnRevealCopy" type="button" class="ghost" disabled>Copy Secret</button>
+        <div style="margin-left:auto;" class="small">
+          Show for
+          <select id="showSeconds">
+            <option value="5">5 sec</option>
+            <option value="10" selected>10 sec</option>
+            <option value="20">20 sec</option>
+            <option value="0">Persistent</option>
+          </select>
+        </div>
       </div>
-    </div>
-    <label for="decryptedOut" style="margin-top:1rem;">Decrypted Secret</label>
-    <div id="decryptedOut" class="output" aria-live="polite" aria-atomic="true" spellcheck="false"></div>
-    <div id="countdown" class="small" style="display:none;">
-      Secret will self-destruct in <span class="timer">10</span> seconds.
-    </div>
-  </section>
+      <label style="margin-top:1rem;">Decrypted Secret</label>
+      <div id="decryptedOut" class="output" aria-live="polite" aria-atomic="true" spellcheck="false"></div>
+      <div id="countdown" class="small" style="display:none;">
+        Secret will self-destruct in <span class="timer">10</span> seconds.
+      </div>
+    </section>
 
-  <footer>
-    <p>Developed by Venkat.</p>
-    <p>
-      <a href="https://github.com/venkatengineer" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">GitHub: venkatengineer</a> | 
-      <a href="https://instagram.com/venkat__engineer" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profile">Instagram: venkat__engineer</a>
-    </p>
-  </footer>
-</div>
+    <footer>
+      <p>Developed by Venkat.</p>
+      <p>
+        <a href="https://github.com/venkatengineer" target="_blank">GitHub: venkatengineer</a> | 
+        <a href="https://instagram.com/venkat__engineer" target="_blank">Instagram: venkat__engineer</a>
+      </p>
+    </footer>
+  </div>
 
-<script>
-  function capitalize(s) {
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  }
-  function mulberry32(a) {
-    return function() {
-      a |= 0; a = (a + 0x6D2B79F5) | 0;
-      var t = Math.imul(a ^ a >>> 15, 1 | a);
-      t = (t + Math.imul(t ^ t >>> 7, 61 | t)) ^ t;
-      return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    }
-  }
-  function seedFromNonce(nonceStr) {
-    let h = 2166136261 >>> 0;
-    for (let i = 0; i < nonceStr.length; i++) {
-      h ^= nonceStr.charCodeAt(i);
-      h = Math.imul(h, 16777619) >>> 0;
-    }
-    return h | 0;
-  }
-  const b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-  const masterWords = [
-    "time","person","year","way","day","thing","man","world","life","hand","part","child","eye","woman","place","work",
-    "week","case","point","number","group","problem","fact","story","dream","shadow","light","star","moon","sun","sky",
-    "cloud","wind","flame","sea","stone","leaf","flower","bird","fish","horse","cat","dog","friend","stranger","traveler",
-    "sailor","soldier","merchant","artist","poet","king","queen","prince","princess","hero","villain","memory","hope","fear",
-    "dawn","dusk","ember","trail","harbor","market","candle","lantern","tale","murmur","whisper","echo","harvest","voyage",
-    "lullaby","glisten","ripple","meadow","atlas","compass","bridge","river","mountain","forest","garden","street","city",
-    "village","house","door","window","room","table","chair","book","letter","song","voice","melody","chorus","rhythm",
-    "thunder","rain","drizzle","storm","breeze","cliff","valley","canyon","plateau","glacier","desert","island","bay","reef",
-    "lagoon","oasis","dune","summit","peak","ridge","glen","prairie","orchard","vineyard","grove","marsh","bayou","tide",
-    "current","wharf","pier","vessel","mast","anchor","keel","sail","oar","crew","captain","map","northstar","beacon",
-    "lighthouse","signal","cargo","crate","chest","trove","relic","artifact","ruin","temple","shrine","altar","scroll",
-    "manuscript","parchment","quill","ink","seal","crest","banner","flag","emblem","crown","throne","scepter","robe",
-    "armor","blade","dagger","sword","spear","shield","helm","gauntlet","forge","anvil","smith","miner","quarry","ore",
-    "gem","ruby","sapphire","emerald","opal","crystal","mirror","prism","eclipse","orbit","gravity","magnet","circuit",
-    "spark","pulse","ember2","voyage2","rumble","lantern2","maple","cedar","spruce","basalt","granite","porcelain",
-    "garnet","topaz","onyx","marble","corridor","arcade","gallery","atelier"
-  ];
-  const blockSize = 3;
-  while (masterWords.length < (b64chars.length * blockSize)) {
-    masterWords.push("leaf" + masterWords.length);
-  }
-  const blocks = [];
-  for (let i = 0; i < b64chars.length; i++) {
-    blocks.push(masterWords.slice(i * blockSize, (i + 1) * blockSize).map(x => x.toLowerCase()));
-  }
-  function makeNonce() {
-    return Math.floor(Math.random() * 0x7fffffff).toString(36);
-  }
-  function makeSignatureFromNonce(nonce) {
-    const names = ["Aria", "Milo", "Noah", "Luna", "Iris", "Esme", "Theo", "Nora", "Ezra", "Zara", "Kian", "Asha", "Rhea", "Kira", "Odin"];
-    const n = Math.abs(seedFromNonce(nonce)) % names.length;
-    return `${names[n]}${nonce}`;
-  }
-  function extractNonceFromStory(story) {
-    const sigRegex = /[—\-]\s*([A-Za-z]+[0-9a-z]+)\s*$/i;
-    const m = story.match(sigRegex);
-    if (!m) return null;
-    const token = m[1];
-    const nonceMatch = token.match(/[0-9a-z]+$/i);
-    return nonceMatch ? nonceMatch[0] : null;
-  }
-  function ciphertextToStory(cipherB64, nonce, style = "short") {
-    const seed = seedFromNonce(nonce);
-    const rnd = mulberry32(seed);
-    const words = [];
-    for (const ch of cipherB64) {
-      const idx = b64chars.indexOf(ch);
-      if (idx === -1) {
-        words.push(masterWords[Math.floor(rnd() * masterWords.length)]);
-        continue;
-      }
-      const block = blocks[idx];
-      const pick = Math.floor(rnd() * block.length);
-      words.push(block[pick]);
-    }
-    // Generate paragraphs with 3-6 sentences each, 3-7 words per sentence, sentences separated by space,
-    // paragraphs separated by double newline to form a natural story flow.
-    let ptr = 0;
-    let paragraphs = [];
-    while (ptr < words.length) {
-      let paraSentences = [];
-      let paraLen = 3 + Math.floor(rnd() * 4); // 3 to 6 sentences per paragraph
-      for (let s = 0; s < paraLen && ptr < words.length; s++) {
-        let sentLen = Math.min(3 + Math.floor(rnd() * 5), words.length - ptr); // 3-7 words per sentence
-        let slice = words.slice(ptr, ptr + sentLen);
-        paraSentences.push(capitalize(slice.join(" ")) + ".");
-        ptr += sentLen;
-      }
-      paragraphs.push(paraSentences.join(" "));
-    }
-    return paragraphs.join("\n\n") + "\n\n" + `— ${makeSignatureFromNonce(nonce)}`;
-  }
-  function encryptMessage(plainText, password) {
-    return CryptoJS.AES.encrypt(plainText, password || "").toString();
-  }
-  function decryptMessage(cipherStr, password) {
-    try {
-      const bytes = CryptoJS.AES.decrypt(cipherStr, password || "");
-      const txt = bytes.toString(CryptoJS.enc.Utf8);
-      return txt ? txt : null;
-    } catch {
-      return null;
-    }
-  }
-  function storyToCipherB64(story) {
-    const sigRegexFull = /\s*[—\-]\s*[A-Za-z]+[0-9a-z]+\s*$/i;
-    const body = story.replace(sigRegexFull, "").trim();
-    const rawWords = body.replace(/[.,;"()]/g, " ").replace(/\s+/g, " ").trim().split(" ").filter(Boolean);
-    const chars = [];
-    for (const w of rawWords) {
-      const lw = w.toLowerCase();
-      let foundIndex = -1;
-      for (let i = 0; i < blocks.length; i++) {
-        if (blocks[i].includes(lw)) {
-          foundIndex = i;
-          break;
-        }
-      }
-      if (foundIndex !== -1) {
-        chars.push(b64chars[foundIndex]);
-      }
-    }
-    return chars.length === 0 ? null : chars.join("");
-  }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="script.js"></script>
 
-  const btnEncode = document.getElementById("btnEncode");
-  const btnEncodeCopy = document.getElementById("btnEncodeCopy");
-  const storyOut = document.getElementById("storyOut");
-  const storySig = document.getElementById("storySig");
-  const plain = document.getElementById("plain");
-  const encPass = document.getElementById("encPass");
-  const variantSelect = document.getElementById("variantSelect");
-  const btnDecode = document.getElementById("btnDecode");
-  const btnRevealCopy = document.getElementById("btnRevealCopy");
-  const storyIn = document.getElementById("storyIn");
-  const decPass = document.getElementById("decPass");
-  const decryptedOut = document.getElementById("decryptedOut");
-  const showSeconds = document.getElementById("showSeconds");
-  const countdown = document.getElementById("countdown");
-  const timerSpan = countdown.querySelector(".timer");
-
-  let selfDestructTimer = null;
-  let selfDestructCount = null;
-
-  function clearDecryptedTimer() {
-    if (selfDestructTimer) {
-      clearInterval(selfDestructTimer);
-      selfDestructTimer = null;
-    }
-    selfDestructCount = null;
-    countdown.style.display = "none";
-    timerSpan.textContent = "";
-    decryptedOut.textContent = "";
-    btnRevealCopy.disabled = true;
-  }
-
-  btnEncode.addEventListener("click", () => {
-    btnEncodeCopy.disabled = true;
-    btnRevealCopy.disabled = true;
-    clearDecryptedTimer();
-    const txt = plain.value.trim();
-    const pw = encPass.value;
-    const style = variantSelect.value;
-    if (!txt) {
-      alert("Enter a secret message.");
-      plain.focus();
-      return;
-    }
-    if (!pw && !confirm("No password entered. This is insecure. Continue?")) {
-      encPass.focus();
-      return;
-    }
-    try {
-      const cipher = encryptMessage(txt, pw);
-      const nonce = makeNonce();
-      const story = ciphertextToStory(cipher, nonce, style);
-      storyOut.textContent = story;
-      storySig.textContent = "Signature token: " + makeSignatureFromNonce(nonce);
-      btnEncodeCopy.disabled = false;
-    } catch (e) {
-      alert("Encryption error: " + e.message);
-    }
-  });
-
-  btnEncodeCopy.addEventListener("click", async () => {
-    try {
-      const text = storyOut.textContent;
-      if (!text) {
-        alert("No story to copy!");
-        return;
-      }
-      await navigator.clipboard.writeText(text);
-      alert("Story copied to clipboard!");
-    } catch {
-      prompt("Copy the story below:", storyOut.textContent);
-    }
-  });
-
-  btnDecode.addEventListener("click", () => {
-    clearDecryptedTimer();
-    btnRevealCopy.disabled = true;
-    const story = storyIn.value.trim();
-    const pw = decPass.value;
-    if (!story) {
-      alert("Paste the shared story.");
-      storyIn.focus();
-      return;
-    }
-    if (!pw) {
-      alert("Enter the password used to encrypt the story.");
-      decPass.focus();
-      return;
-    }
-    try {
-      const nonce = extractNonceFromStory(story);
-      if (!nonce) {
-        alert("Could not find signature token in the story. Include the entire story including signature.");
-        return;
-      }
-      const cipherB64 = storyToCipherB64(story);
-      if (!cipherB64) {
-        alert("Could not reconstruct ciphertext. Story may be incomplete or modified.");
-        return;
-      }
-      const plainTxt = decryptMessage(cipherB64, pw);
-      if (plainTxt === null) {
-        alert("Decryption failed. Wrong password or corrupted story.");
-        return;
-      }
-      decryptedOut.textContent = plainTxt;
-      btnRevealCopy.disabled = false;
-
-      const secs = parseInt(showSeconds.value, 10);
-      if (secs > 0) {
-        selfDestructCount = secs;
-        timerSpan.textContent = selfDestructCount;
-        countdown.style.display = "block";
-        selfDestructTimer = setInterval(() => {
-          selfDestructCount--;
-          if (selfDestructCount <= 0) {
-            clearDecryptedTimer();
-            alert("Secret erased due to self-destruct.");
-          } else {
-            timerSpan.textContent = selfDestructCount;
-          }
-        }, 1000);
-      } else {
-        countdown.style.display = "none";
-        timerSpan.textContent = "";
-      }
-    } catch (e) {
-      alert("Error during decryption: " + e.message);
-    }
-  });
-
-  btnRevealCopy.addEventListener("click", async () => {
-    try {
-      const text = decryptedOut.textContent;
-      if (!text) {
-        alert("Nothing to copy.");
-        return;
-      }
-      await navigator.clipboard.writeText(text);
-      alert("Secret copied to clipboard!");
-    } catch {
-      prompt("Copy the secret below:", decryptedOut.textContent);
-    }
-  });
-</script>
 </body>
 </html>

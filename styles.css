@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+:root {
+  --bg: #000000;
+  --primary: #00ff00;
+  --primary-light: #33ff33;
+  --secondary: #009900;
+  --shadow-green: rgba(0, 255, 0, 0.6);
+  --text: #00ff00cc;
+  --text-bright: #00ff00ee;
+  --border: #004d00;
+  --button-bg: #001a00;
+  --button-hover-bg: #00cc00;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  padding: 3rem 2rem;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+.wrap {
+  max-width: 900px;
+  width: 100%;
+  background: #000000;
+  border-radius: 18px;
+  padding: 3rem 3.5rem;
+  box-shadow:
+    0 0 40px var(--shadow-green),
+    inset 0 0 50px #003300;
+  border: 3px solid #003300;
+  position: relative;
+  overflow: hidden;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  font-size: 3.6rem;
+  font-weight: 900;
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.25rem;
+  color: var(--primary);
+  text-shadow:
+    0 0 15px var(--primary),
+    0 0 35px var(--primary-light),
+    0 0 70px var(--primary-light);
+  animation: flicker 3.5s infinite;
+  margin-bottom: 3.5rem;
+}
+
+header img {
+  width: 66px;
+  height: 66px;
+  filter: drop-shadow(0 0 18px var(--primary));
+  animation: flicker 3.5s infinite;
+}
+
+.card {
+  background: #001100;
+  border-radius: 20px;
+  padding: 2.4rem 3rem;
+  margin-bottom: 2.8rem;
+  border: 3px solid var(--border);
+  box-shadow:
+    inset 0 0 80px #003300,
+    0 0 35px var(--shadow-green);
+  position: relative;
+}
+
+h3 {
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  font-size: 2.3rem;
+  color: var(--primary-light);
+  letter-spacing: 0.1em;
+  text-shadow:
+    0 0 12px var(--primary-light),
+    0 0 30px var(--primary);
+  margin-bottom: 1.6rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--primary-light);
+  font-weight: 600;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+textarea,
+input[type="password"],
+select {
+  width: 100%;
+  background: #001f00;
+  border: 3px solid #004d00;
+  border-radius: 20px;
+  color: var(--primary-light);
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 400;
+  font-size: 1.15rem;
+  padding: 0.9rem 1.4rem;
+  box-shadow:
+    inset 0 0 25px #003300;
+  transition: border-color 0.4s, box-shadow 0.4s;
+  resize: vertical;
+}
+
+textarea:focus,
+input[type="password"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow:
+    0 0 40px var(--primary),
+    inset 0 0 35px var(--primary-light);
+  background: #003300;
+  color: var(--primary-light);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.8rem;
+  margin-top: 2.2rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+button {
+  background: var(--button-bg);
+  border: 3px solid var(--primary);
+  color: var(--primary);
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 1rem 2.8rem;
+  border-radius: 32px;
+  box-shadow:
+    0 0 40px var(--shadow-green),
+    inset 0 0 20px var(--primary);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.4s, transform 0.15s, box-shadow 0.4s;
+  flex-shrink: 0;
+}
+
+button:hover:not(:disabled) {
+  background: var(--primary);
+  color: #001100;
+  box-shadow:
+    0 0 60px var(--primary),
+    inset 0 0 40px var(--primary);
+  transform: scale(1.08);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+button.ghost {
+  background: transparent;
+  border-color: var(--primary-light);
+  color: var(--primary-light);
+  box-shadow: none;
+}
+
+button.ghost:hover:not(:disabled) {
+  background: var(--primary);
+  box-shadow:
+    0 0 50px var(--primary),
+    inset 0 0 30px var(--primary-light);
+  color: #001100;
+}
+
+select {
+  max-width: 180px;
+  background: #001f00;
+  border: 3px solid #004d00;
+  border-radius: 32px;
+  color: var(--primary-light);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.15rem;
+  padding: 0.8rem 1.6rem;
+  cursor: pointer;
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+
+select:hover,
+select:focus {
+  border-color: var(--primary);
+  box-shadow:
+    0 0 25px var(--primary);
+  outline: none;
+}
+
+.small {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+  color: #004d00;
+  user-select: none;
+  margin-left: 0.8rem;
+}
+
+.output {
+  background: #002800;
+  border-radius: 24px;
+  border: 3px solid var(--border);
+  color: var(--primary-light);
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 400;
+  font-size: 1.1rem;
+  padding: 1.5rem 2rem;
+  min-height: 9rem;
+  white-space: pre-wrap;
+  box-shadow:
+    inset 0 0 40px var(--shadow-green);
+  user-select: text;
+  transition: box-shadow 0.3s ease;
+}
+
+.output:focus {
+  outline: none;
+  box-shadow:
+    inset 0 0 55px var(--primary);
+}
+
+.signature {
+  margin-top: 0.8rem;
+  color: #004d00cc;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: right;
+  text-shadow:
+    0 0 15px var(--primary);
+  user-select: none;
+}
+
+.timer {
+  margin-left: auto;
+  color: var(--primary-light);
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+footer {
+  font-family: 'Share Tech Mono', monospace;
+  color: #004d0040;
+  text-align: center;
+  margin-top: 4rem;
+  user-select: none;
+}
+
+footer a {
+  color: var(--primary-light);
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+footer a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px var(--primary));
+  }
+  20%, 22%, 24%, 55% {
+    opacity: 0.7;
+    filter: none;
+  }
+}
+
+header {
+  animation: flicker 3.5s infinite ease-in-out;
+}
+
+@media (max-width: 700px) {
+  .controls {
+    flex-direction: column;
+  }
+
+  button, select {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
